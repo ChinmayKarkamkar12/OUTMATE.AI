@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { callGemini } from "../services/gemini.service";
+import { callGemini, GeminiRateLimitError } from "../services/gemini.service";
 import { fetchFromExplorium } from "../services/explorium.service";
 import { normalizeResults } from "../services/normalize.service";
 import { logEnrichmentRequest } from "../utils/logger";
@@ -12,9 +12,32 @@ export const enrichHandler = async (
   try {
     const { prompt } = req.body;
 
+    if (!prompt || typeof prompt !== "string") {
+      return res.status(400).json({
+        message: "Prompt is required",
+        error_code: "INVALID_PROMPT"
+      });
+    }
+
+    let structuredFilters;
+
     // 1️⃣ Convert natural language → structured filters
-    const structuredFilters = await callGemini(prompt);
-    console.log("GEMINI OUTPUT:", JSON.stringify(structuredFilters, null, 2));
+    try {
+      structuredFilters = await callGemini(prompt);
+      console.log("GEMINI OUTPUT:", JSON.stringify(structuredFilters, null, 2));
+    } catch (error: any) {
+      if (error instanceof GeminiRateLimitError) {
+        return res.status(429).json({
+          message: "Gemini rate limit exceeded. Please try again shortly.",
+          error_code: "GEMINI_RATE_LIMIT"
+        });
+      }
+
+      return res.status(500).json({
+        message: "Failed to process prompt using Gemini.",
+        error_code: "GEMINI_ERROR"
+      });
+    }
 
     // 2️⃣ Fetch enriched data (mock or real)
     const results = await fetchFromExplorium(
@@ -22,14 +45,11 @@ export const enrichHandler = async (
       structuredFilters.filters
     );
 
-    // 🔍 Debug: log only first result to inspect field mapping
     if (results && results.length > 0) {
       console.log(
         "RAW EXPLORIUM FIRST RESULT:",
         JSON.stringify(results[0], null, 2)
       );
-    } else {
-      console.log("RAW EXPLORIUM RESPONSE: No results returned");
     }
 
     // 3️⃣ Normalize data format
@@ -48,6 +68,6 @@ export const enrichHandler = async (
     });
 
   } catch (error) {
-    next(error); // Let global error handler handle it
+    next(error);
   }
 };
