@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* ── Tailwind v4: class-based dark mode ───────────── */
+/* stylelint-disable-next-line at-rule-no-unknown */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Light Theme Tokens (Olive) ───────────────────── */
+:root {
+    --color-bg: #f6f5f0;
+    --color-surface: #ffffff;
+    --color-surface-raised: #f0eee8;
+    --color-border: #d6d3c8;
+    --color-border-hover: #c2bfb2;
+    --color-text: #2c2c1e;
+    --color-text-secondary: #6b6b56;
+    --color-text-muted: #9a9a82;
+    --color-accent: #4a5d23;
+    --color-accent-hover: #3d4e1c;
+    --color-accent-light: #eef2e4;
+    --color-danger: #c53030;
+    --color-danger-bg: #fef2f2;
+    --color-danger-border: #f5c6c6;
+}
+
+/* ── Dark Theme Tokens (Olive) ────────────────────── */
+.dark {
+    --color-bg: #151514;
+    --color-surface: #1f1f1d;
+    --color-surface-raised: #2a2a27;
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-hover: rgba(255, 255, 255, 0.14);
+    --color-text: #e8e8df;
+    --color-text-secondary: #a3a38e;
+    --color-text-muted: #6e6e5c;
+    --color-accent: #8fa857;
+    --color-accent-hover: #a3bf6a;
+    --color-accent-light: rgba(143, 168, 87, 0.1);
+    --color-danger: #f87171;
+    --color-danger-bg: rgba(239, 68, 68, 0.08);
+    --color-danger-border: rgba(239, 68, 68, 0.2);
+}
+
+/* ── Base Styles ───────────────────────────────────── */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ── Global smooth transitions for theme switching ── */
+*,
+*::before,
+*::after {
+    transition-property: background-color, border-color, box-shadow, color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+}
+
+/* Exclude elements that define their own transition timing */
+[class*="animate-"],
+svg,
+svg * {
+    transition-property: none;
+}
+
+/* ── Animations ────────────────────────────────────── */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceDot {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+        opacity: 0.4;
+    }
+
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98) translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes modalOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.98) translateY(4px);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        opacity: 0.25;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@keyframes backdropIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.3s ease-out both;
+}
+
+.animate-bounce-dot {
+    animation: bounceDot 1.4s infinite ease-in-out both;
+}
+
+.animate-modal-in {
+    animation: modalIn 0.2s ease-out both;
+}
+
+.animate-slide-down {
+    animation: slideDown 0.25s ease-out both;
+}
+
+.animate-glow-pulse {
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+.animate-backdrop-in {
+    animation: backdropIn 0.2s ease-out both;
+}
+
+/* Staggered fade-in delays for sections */
+.animate-delay-1 {
+    animation-delay: 0.05s;
+}
+
+.animate-delay-2 {
+    animation-delay: 0.1s;
+}
+
+.animate-delay-3 {
+    animation-delay: 0.15s;
+}
+
+/* ── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c2bfb2;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9a9a82;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
