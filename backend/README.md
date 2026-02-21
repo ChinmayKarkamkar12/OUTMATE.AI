@@ -114,7 +114,7 @@ The server starts at **http://localhost:5000** with hot-reload via `ts-node-dev`
 ### 4. Production Build (optional)
 
 ```bash
-npx tsc            # compile to dist/
+npm run build       # compile TypeScript to dist/
 npm start           # run dist/server.js
 ```
 
@@ -152,10 +152,27 @@ Converts a natural-language prompt into enriched B2B data.
 }
 ```
 
-**Error Response (400/500):**
+**Error Response (400):**
 ```json
 {
-  "error": "Prompt is required"
+  "message": "Prompt is required",
+  "error_code": "INVALID_PROMPT"
+}
+```
+
+**Error Response (429 — Gemini rate limited):**
+```json
+{
+  "message": "Gemini rate limit exceeded. Please try again shortly.",
+  "error_code": "GEMINI_RATE_LIMIT"
+}
+```
+
+**Error Response (500):**
+```json
+{
+  "message": "Failed to process prompt using Gemini.",
+  "error_code": "GEMINI_ERROR"
 }
 ```
 
@@ -175,9 +192,12 @@ Health check endpoint.
 ## 🧩 Key Services
 
 ### Gemini Service (`gemini.service.ts`)
-- Sends the user prompt to **Google Gemini 2.5 Flash** with a carefully crafted system prompt
+- Sends the user prompt to **Google Gemini 2.5 Flash** via `x-goog-api-key` header authentication
 - Gemini returns structured JSON: `{ entity_type: "company" | "prospect", filters: { ... } }`
+- Custom error classes: `GeminiRateLimitError` (429) and `GeminiResponseError` (other failures)
+- Automatic retry with backoff on 429 rate limit errors
 - Handles double-stringified JSON, markdown code fences, and empty responses
+- 10-second request timeout to prevent hanging
 
 ### Explorium Service (`explorium.service.ts`)
 - Takes the entity type and filters from Gemini
@@ -187,8 +207,8 @@ Health check endpoint.
 - Caps results at 3 per request
 
 ### Normalize Service (`normalize.service.ts`)
-- Maps raw Explorium fields to a clean, consistent schema
-- Handles field aliases (e.g. `naics_description` → `industry`, `number_of_employees_range` → `employee_count`)
+- Maps raw API fields to a clean, consistent schema
+- Handles both mock data and real Explorium field names (e.g. `naics_description` → `industry`, `number_of_employees_range` → `employee_count`)
 
 ---
 

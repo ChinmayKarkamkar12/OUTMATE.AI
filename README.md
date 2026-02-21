@@ -205,7 +205,7 @@ curl -X POST http://localhost:5000/api/enrich \
 - ✅ **Sample prompts** – one-click examples to get started quickly
 - ✅ **Raw JSON drill-down** – inspect the full API response per result
 - ✅ **Rate limiting** – protects the API from abuse
-- ✅ **Error handling** – user-friendly error messages and backend logging
+- ✅ **Error handling** – structured error codes (`GEMINI_RATE_LIMIT`, `GEMINI_ERROR`) with user-friendly messages and backend retries
 - ✅ **Responsive design** – optimized for desktop & mobile
 
 ---
