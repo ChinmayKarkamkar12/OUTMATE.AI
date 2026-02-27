@@ -32,14 +32,14 @@ Rules:
 - For company searches, use these filter fields (all optional):
   - "linkedin_category": array of industry names. MUST be chosen EXACTLY from the valid list below. Use lowercase.
   - "country_code": array of lowercase ISO 2-letter country codes.
-  - "company_size": array of size bucket strings.
+  - "company_size": array of size strings. ONLY use these values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10001+".
   - "website_keywords": array of keyword strings relevant to the business.
 - For prospect searches, use:
   - "country_code"
-  - "job_level"
-  - "job_department"
-  - "company_size"
-  - "linkedin_category"
+  - "job_level": array of strings. ONLY use these values: "Advisor", "Board Member", "C-suite", "Director", "Founder", "Freelancer", "Junior", "Manager", "Non-managerial", "Owner", "Partner", "President", "Senior Manager", "Senior Non-managerial", "Vice President".
+  - "job_department": array of strings. ONLY use these values: "Administration", "Creative", "C-suite", "Customer Success", "Data", "Design", "Education", "Engineering", "Finance", "Healthcare", "Human Resources", "IT", "Legal", "Logistics", "Manufacturing", "Marketing", "Operations", "Partnerships", "Product", "Procurement", "Public Service", "R&D", "Real Estate", "Retail", "Sales", "Security", "Strategy", "Support", "Trade".
+  - "company_size": (same as above).
+  - "linkedin_category": (same as above).
 - Only include clearly relevant filters.
 - Convert country names to ISO 2-letter codes.
 - For linkedin_category, ONLY use values from this exact list (pick the closest match):

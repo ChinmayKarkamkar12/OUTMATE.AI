@@ -1,13 +1,14 @@
 export const normalizeResults = (records: any[]) => {
     return records.map((item) => ({
-        type: item.type ?? "company",
+        type: item.type ?? (item.prospect_id ? "prospect" : "company"),
 
         // Core fields
-        name: item.name ?? null,
-        domain: item.domain ?? item.website ?? null,
+        name: item.full_name ?? item.name ?? null,
+        domain: item.company_website ?? item.domain ?? item.website ?? null,
 
-        // Industry
+        // Industry / Job Title
         industry:
+            item.job_title ??
             item.industry ??
             item.naics_description ??
             item.sic_code_description ??
@@ -33,6 +34,7 @@ export const normalizeResults = (records: any[]) => {
 
         // LinkedIn
         linkedin_url:
+            item.linkedin ??
             item.linkedin_url ??
             item.linkedin_profile ??
             null,
