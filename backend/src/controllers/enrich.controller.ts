@@ -14,7 +14,7 @@ export const enrichHandler = async (
 
     if (!prompt || typeof prompt !== "string") {
       return res.status(400).json({
-        message: "Prompt is required",
+        error: "Prompt is required",
         error_code: "INVALID_PROMPT"
       });
     }
@@ -34,7 +34,7 @@ export const enrichHandler = async (
       }
 
       return res.status(500).json({
-        message: "Failed to process prompt using Gemini.",
+        error: "Failed to process prompt using Gemini.",
         error_code: "GEMINI_ERROR"
       });
     }

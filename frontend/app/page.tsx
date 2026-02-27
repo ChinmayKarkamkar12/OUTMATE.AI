@@ -25,6 +25,7 @@ export default function Home() {
     } catch (err: any) {
       setError(
         err?.response?.data?.error ||
+        err?.response?.data?.message ||
         "Something went wrong. Please try again."
       );
     } finally {
