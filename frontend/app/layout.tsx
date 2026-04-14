@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "OutMate – NLP Enrichment Demo",
+  title: "AI-Powered Lead Enrichment",
   description:
     "Turn natural language into enriched B2B intelligence. Powered by AI.",
 };

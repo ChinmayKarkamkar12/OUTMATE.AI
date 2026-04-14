@@ -59,10 +59,9 @@ export default function Home() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#2c2c1e] dark:text-[#e8e8df]">
-            OutMate{" "}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
             <span className="bg-gradient-to-r from-[#4a5d23] via-[#5a7028] to-[#748a4a] dark:from-[#8fa857] dark:via-[#a3bf6a] dark:to-[#b8c4a0] bg-clip-text text-transparent">
-              – NLP Enrichment Demo
+              AI-Powered Lead Enrichment
             </span>
           </h1>
 
